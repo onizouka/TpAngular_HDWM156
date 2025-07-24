@@ -1,0 +1,12 @@
+<h2>Liste des films</h2>
+<div class="movie-list">
+  <div class="movie-card" *ngFor="let movie of movies">
+    <img [src]="movie.cover" [alt]="movie.title" class="movie-cover" />
+    <h3>{{ movie.title }} ({{ movie.year }})</h3>
+    <p><strong>Réalisateur :</strong> {{ movie.author }}</p>
+    <p><strong>Durée :</strong> {{ movie.duration }} min</p>
+    <p><strong>Genre :</strong> {{ movie.genre }}</p>
+    <p><strong>Synopsis :</strong> {{ movie.synopsis }}</p>
+    <p><strong>Note :</strong> {{ movie.rating }}/5</p>
+  </div>
+</div>
