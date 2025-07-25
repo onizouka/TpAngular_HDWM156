@@ -1,12 +1,23 @@
 <h2>Liste des films</h2>
 <div class="movie-list">
-  <div class="movie-card" *ngFor="let movie of movies">
-    <img [src]="movie.cover" [alt]="movie.title" class="movie-cover" />
-    <h3>{{ movie.title }} ({{ movie.year }})</h3>
+
+
+  <div *ngFor="let movie of movies" class="uk-card uk-card-default uk-card-body uk-margin">
+    <h3 class="uk-card-title">{{ movie.title }}</h3>
+    <img [src]="movie.cover" alt="{{ movie.title }}" class="uk-width-medium">
+    <p>{{ movie.synopsis }}</p>
     <p><strong>Réalisateur :</strong> {{ movie.author }}</p>
     <p><strong>Durée :</strong> {{ movie.duration }} min</p>
     <p><strong>Genre :</strong> {{ movie.genre }}</p>
-    <p><strong>Synopsis :</strong> {{ movie.synopsis }}</p>
-    <p><strong>Note :</strong> {{ movie.rating }}/5</p>
+
+    <div>
+  <span *ngFor="let i of getStars(5)" (click)="rateMovie(movie, i + 1)">
+    <span [class]="i < movie.rating ? 'uk-icon uk-text-warning' : 'uk-icon uk-text-muted'">
+      ★
+    </span>
+  </span>
+      ({{ movie.rating }}/5)
+    </div>
   </div>
-</div>
+  </div>
+

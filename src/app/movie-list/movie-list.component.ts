@@ -1,51 +1,44 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IMovie, MovieService, MovieApiResponse } from '../services/movie'; // Import MovieApiResponse
+import { Component, OnInit } from '@angular/core';
 
+declare const UIkit: any;
 
 @Component({
   standalone: true,
   selector: 'app-movie-list',
   templateUrl: './movie-list.component.html',
-  styleUrls: ['./movie-list.component.css'],
+  styleUrls: ['./movie-list.component.scss'],
   imports: [CommonModule]
 })
-export class MovieListComponent {
-  movies = [
-    {
-      id: 1,
-      slug: "1",
-      title: "Inception",
-      year: 2018,
-      author: "Roar Uthaug",
-      duration: 125,
-      genre: "Action, Fantasy",
-      synopsis: "Un voleur s'infiltre dans les rêves pour dérober des secrets.",
-      cover: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_.jpg",
-      rating: 3
-    },
-    {
-      id: 2,
-      slug: "2",
-      title: "The Dark Knight",
-      year: 2018,
-      author: "Roar Uthaug",
-      duration: 125,
-      genre: "Action, Fantasy",
-      synopsis: "Batman affronte le Joker pour sauver Gotham.",
-      cover: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-      rating: 5
-    },
-    {
-      id: 3,
-      slug: "3",
-      title: "Interstellar",
-      year: 2018,
-      author: "Roar Uthaug",
-      duration: 125,
-      genre: "Action, Fantasy",
-      synopsis: "Une équipe voyage à travers un trou de ver pour sauver l'humanité.",
-      cover: "https://m.media-amazon.com/images/M/MV5BYzdjMDAxZGItMjI2My00ODA1LTlkNzItOWFjMDU5ZDJlYWY3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
-      rating: 4
-    }
-  ];
+export class MovieListComponent implements OnInit {
+  movies: IMovie[] = [];
+
+  constructor(private movieService: MovieService) {}
+
+  ngOnInit(): void {
+    UIkit.modal('#loading-modal').show();
+
+    this.movieService.getMovies().subscribe({
+      next: (response: MovieApiResponse) => {
+        this.movies = response.data;
+        UIkit.modal.alert(response.message);
+        UIkit.modal('#loading-modal').hide();
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des films :', err);
+        UIkit.modal('#loading-modal').hide();
+      }
+    });
+  }
+
+  getStars(maxStars: number): number[] {
+    return Array.from({ length: maxStars }, (_, i) => i);
+  }
+
+  rateMovie(movie: IMovie, rating: number): void {
+    movie.rating = rating;
+    this.movieService.updateMovieRating(movie.id, rating).subscribe();
+  }
 }
+

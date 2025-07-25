@@ -1,0 +1,28 @@
+<p>login works!</p>
+<div class="uk-container uk-margin-top">
+  <h2>Connexion</h2>
+  <form (ngSubmit)="onSubmit()" class="uk-form-stacked">
+    <div class="uk-margin">
+      <label class="uk-form-label">Email</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" type="email" [(ngModel)]="user.email" name="email" required>
+      </div>
+    </div>
+
+    <div class="uk-margin">
+      <label class="uk-form-label">Mot de passe</label>
+      <div class="uk-form-controls">
+        <input class="uk-input" type="password" [(ngModel)]="user.password" name="password" required>
+      </div>
+    </div>
+
+    <button class="uk-button uk-button-primary" type="submit">Se connecter</button>
+  </form>
+</div>
+
+<!-- Modal de chargement -->
+<div id="loading-modal" uk-modal>
+  <div class="uk-modal-dialog uk-modal-body">
+    <p>Chargement...</p>
+  </div>
+</div>
